@@ -36,7 +36,7 @@
         {
             "language": "markdown",
             "source": [
-                "`any` 類型就相當於 `JavaScript` 中的變量, 可以被複製爲任何類型\n\n強烈建議不要使用 `any` 更不要使用隱式的 `any`, 否則 `TypeScript` 將變爲和 `JavaScript` 等價的 `AnyScript`\n"
+                "`any` 類型就相當於 `JavaScript` 中的變量, 可以被賦值爲任何類型\n\n強烈建議不要使用 `any` 更不要使用隱式的 `any`, 否則 `TypeScript` 將變爲和 `JavaScript` 等價的 `AnyScript`\n"
             ],
             "outputs": []
         },
