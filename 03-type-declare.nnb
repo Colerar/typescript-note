@@ -1,0 +1,163 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "`TypeScript` 的變量聲明如下:"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "// 使用 `let` 關鍵詞避免作用域異常\n// 和 javascript 一樣, number 爲 IEEE 浮點數\nlet a: number // 推薦\n// 不推薦的做法, 不要使用 var 聲明變量\n// var b: number ❌\na = 1\na = 114514\na = 1.1451\n// a = 'a'\n// 注意: typescript 默認配置是允許在 error 時仍然編譯成功的"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "text/plain",
+                            "value": [
+                                "\u001b[33m1.1451\u001b[39m"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "`TypeScript` 具有一點類型推斷特性"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "let c = true // c: Any\nc = false\n// c = \"114514\" // error, c 被類型推斷爲 boolean"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "text/plain",
+                            "value": [
+                                "\u001b[33mfalse\u001b[39m"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "但是 `TypeScript` 的類型推斷十分有限, 對於變量, 僅能在聲明時同時賦值, 會自動推斷, 否則一律 Any"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "let d // 变量 \"d\" 隐式具有 \"any\" 类型，但可以从用法中推断出更好的类型。t\nd = true"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "text/plain",
+                            "value": [
+                                "\u001b[33mtrue\u001b[39m"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "於此同時, 不像 `Haskell`, `TypeScript` 不能自動推斷函數輸入. 因此, 以下代碼是純 `JavaScript` 的, 沒有用任何 `TypeScript` 特性:"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "function sum(a, b) { // a: Any, b: Any\n  return a + b\n}\nconsole.log(sum(1, 4)) // 似乎運作正常\n"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "5",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "console.log(sum([1, 2, 3], [4, 5, 6])) // 你以爲會輸出 [1, 2, 3, 4, 5, 6] 嗎?\n// 並不, 輸出的是 1, 2, 34, 5, 6"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "1,2,34,5,6",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "從上面的示例不難看出 `JavaScript` 有以下**優秀特性**:\n - 🤮 噁心的隱式轉換\n - 😢 難 DEBUG\n - ❌ 運行時錯誤\n\n毫無疑問, 這是使用 `TypeScript`, 拋棄 `JavaScript` 的最大原因."
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "如果加上類型限制..."
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "function sumNum(a: number, b: number): number {\n  return a + b\n}\nconst result = sumNum(114, 514) // result: number = 628\n// sumNum(\"114\", 514) // error: 类型“string”的参数不能赋给类型“number”的参数。ts(2345)"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "text/plain",
+                            "value": [
+                                "\u001b[33m628\u001b[39m"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "# 👍 Work Well"
+            ],
+            "outputs": []
+        }
+    ]
+}
