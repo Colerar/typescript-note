@@ -14,66 +14,8 @@
 
 - 較弱的[類型推斷](https://zh.wikipedia.org/wiki/%E7%B1%BB%E5%9E%8B%E6%8E%A8%E8%AE%BA)
 
-**然而 `TypeScript` 最終要編譯到 `JavaScript` 最終目標，類型是被嚴重擦除的。**
+**然而 `TypeScript` 最終要編譯到 `JavaScript` 目標，類型是被嚴重擦除的。**
 
 運行時類型完備度：
 
 > TypeScript < Java < C#
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
