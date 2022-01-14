@@ -1,0 +1,260 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "`TypeScripts` 中主要的類型:\n\n`number`, `string`, `boolean`, `literal`\n\n`any`, `unknown`, `void`, `never`, `object`\n\n`array`, `tuple`, `enum`\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "字面量(literal) 類型聲明如下:\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "let sex: \"male\" | \"female\"; // | 代表聯合類型\n// sex = \"unknown\" // error 不能将类型 \"unknown\" 分配给类型 \"male\" | \"female\"\nsex = \"female\";\nconsole.log(sex);\n"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "female",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "`any` 類型就相當於 `JavaScript` 中的變量, 可以被複製爲任何類型\n\n強烈建議不要使用 `any` 更不要使用隱式的 `any`, 否則 `TypeScript` 將變爲和 `JavaScript` 等價的 `AnyScript`\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "let anyValue: any;\nanyValue = 1;\nanyValue = \"10\";\nanyValue = false;\nanyValue = [1, 2, 3, 4];\n"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "text/plain",
+                            "value": [
+                                "[",
+                                "  \u001b[33m1\u001b[39m,",
+                                "  \u001b[33m2\u001b[39m,",
+                                "  \u001b[33m3\u001b[39m,",
+                                "  \u001b[33m4\u001b[39m",
+                                "]"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "`unknown` 是類型安全的 `any`, 若要將它賦值給其他變量, 必須經過類型檢查.\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "let unknownValue: unknown;\nunknownValue = 1;\n// const string1: string = unknownValue // error 不能将类型“unknown”分配给类型“string”\nif (typeof unknownValue === \"string\") {\n  // 類型防護\n  const string2: string = unknownValue; // 👍\n}\nif (unknownValue === \"stringLiteral\") {\n  // 判斷相等\n  const string3: string = unknownValue;\n}\nconst string4: string = unknownValue as string; // 類型斷言\nconst string5: string = <string>unknownValue; // 另一種寫法\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "`void` 表示不會返回值, 這類似 `Java` 裏的 `void`, `Kotlin` 裏的 `Unit`\n\n當然, 如果你喫飽了沒事幹, 可以返回 `undefined` 和 `null`\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "function voidFunc(number: number): void {\n  if (number === 0) return undefined;\n  if (number === 1) return null;\n}\nconst voidResult = voidFunc(1); // void\nconst voidResult2 = voidFunc(0); // void\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "`never` 表示一個永遠不存在的值, 常用的場景是拋出異常, 這類似 `Kotlin` 裏的 `Nothing`\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "function throwError(): never {\n  throw new Error(\"Error!\");\n}\nfunction whileTrue(): never {\n  while (true) {\n    // 永遠不會停下\n  }\n}\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "`object` 限制類型爲一個對象, 同時也可以限制, 該對象是一個**什麼樣的**對象.\n\n應當把 `TypeScript` 中的對象類型看成對集合的描述, 類型和實例之間的屬性及其類型集合必須**相等**\n\n同時這也是一種有動態類型特徵的鴨子類型, 對象不必言明一定繼承了某個接口, 只要功能相同, 就認爲他們是同一個類型.\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "let objectJustHasName: { name: string }; // 該對象是一個有名字, 且沒有其他屬性的對象\nobjectJustHasName = { name: \"🐱\" };\n// objectHasName = { name: \"🐱\", eat: \"🐟\"  } // 多了不行 error: 不能将类型“{ eat: string; }”分配给类型“{ name: string; }”。 对象文字可以只指定已知属性，并且“eat”不在类型“{ name: string; }”中。\nlet crowd: { count: number; highest: string; lowest: string };\n// crowd = { count: 100 } // 少了也不行 error 类型“{ count: number; }”缺少类型“{ count: number; highest: string; lowest: string; }”中的以下属性: highest, lowest\n\nlet objectOptional: { name: string; eat?: string }; // 在名稱後面加 ?\nobjectOptional = { name: \"🐱\", eat: \"🐟\" }; // 有\nobjectOptional = { name: \"🐱\" }; // 沒有, 都可以\n\nlet objectHasName: { name: string; [property: string]: unknown }; // 只要求對象剛好滿足有 name 屬性的一種寫法\nobjectHasName = { name: \"🐶\", eat: \"🦴\" };\n"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "text/plain",
+                            "value": [
+                                "{",
+                                "  name: \u001b[32m'🐶'\u001b[39m,",
+                                "  eat: \u001b[32m'🦴'\u001b[39m",
+                                "}"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "同樣地, 可以將這種寫法帶到函數上\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "let combine: (a: number, b: number) => number;\ncombine = function (a, b) {\n  return a + b;\n}; // 此處是類型推斷, 不是 any\n"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "text/plain",
+                            "value": [
+                                "\u001b[36m[Function: combine]\u001b[39m"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "由此可以實現高階函數\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "function count(\n  list: Array<unknown>,\n  method: (list: Array<unknown>) => number\n): number {\n  return method(list);\n}\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "數組的類型聲明:\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "let array: number[] = [1, 2];\n// or\nlet array1: Array<number> = [1, 2, 3];\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "`Tuple`:\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "let h: [string, number];\n// h = ['hello', 123, \"a\"] // error 不能将类型“[string, number, string]”分配给类型“[string, number]”。 源具有 3 个元素，但目标仅允许 2 个。\n// h = [\"hello\"] // 不能将类型“[string]”分配给类型“[string, number]”。源具有 1 个元素，但目标需要 2 个。\nh = [\"123\", 123]; // 👍\n"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "text/plain",
+                            "value": [
+                                "[",
+                                "  \u001b[32m'123'\u001b[39m,",
+                                "  \u001b[33m123\u001b[39m",
+                                "]"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "`Enum`:\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "enum Gender {\n  Male, // = 0\n  Female, // = 1\n}\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "類型聯合:\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "let j: { name: string } & { age: number }; // 同時實現兩個接口\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "`Typealias`:\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "type Comparator = (a: number, b: number) => boolean;\nconst numComparator: Comparator = function (a, b) {\n  return a > b;\n};\n"
+            ],
+            "outputs": []
+        }
+    ]
+}
